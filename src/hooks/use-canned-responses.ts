@@ -1,31 +1,21 @@
-import { useState, type SetStateAction, type Dispatch } from 'react';
 import { useSelector } from 'react-redux';
-import type { CannedResponseFilterType } from '../types/filter-type';
-import { CannedResponse } from '../types/canned-responses';
-import { getCannedResponses } from '../store/selectors';
-import { privacyFilterCannedResponses } from './helpers/privacy-filter-canned-responses';
+import type { CannedResponse } from '../types/canned-responses';
+import { getFilteredCannedResponses } from '../store/selectors';
 
 interface UseCannedResponses {
   cannedResponses: CannedResponse[];
   isEmpty: boolean;
-  setFilter: Dispatch<SetStateAction<CannedResponseFilterType>>;
-  filter: CannedResponseFilterType;
 }
 
-const filteredAndSortedResponses = (responses: CannedResponse[], filter: CannedResponseFilterType): CannedResponse[] =>
-  privacyFilterCannedResponses(responses, filter).sort(
-    (first, second) => second.modificationTimestamp - first.modificationTimestamp,
-  );
+const sortedResponses = (responses: CannedResponse[]): CannedResponse[] =>
+  responses.sort((first, second) => second.modificationTimestamp - first.modificationTimestamp);
 
 export const useCannedResponses = (): UseCannedResponses => {
-  const [filter, setFilter] = useState<CannedResponseFilterType>('all');
-  const items = useSelector(getCannedResponses);
+  const items = useSelector(getFilteredCannedResponses);
   const isEmpty = items.length === 0;
 
   return {
-    cannedResponses: isEmpty ? [] : filteredAndSortedResponses(items, filter),
-    setFilter,
-    filter,
+    cannedResponses: isEmpty ? [] : sortedResponses(items),
     isEmpty,
   };
 };

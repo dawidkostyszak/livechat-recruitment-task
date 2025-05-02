@@ -7,7 +7,7 @@ import * as styles from './styles';
 import { CannedResponseButtons } from '../canned-responses-buttons/CannedResponseButtons';
 
 export const CannedResponses: FC = () => {
-  const { cannedResponses, setFilter, filter, isEmpty } = useCannedResponses();
+  const { cannedResponses, isEmpty } = useCannedResponses();
   const [search, setSearch] = useState('');
 
   return (
@@ -16,7 +16,7 @@ export const CannedResponses: FC = () => {
         <>
           <div className={styles.actionBar}>
             <div className={styles.barContainer}>
-              <CannedResponseButtons filter={filter} setFilter={setFilter} />
+              <CannedResponseButtons />
             </div>
             <SearchInput onChange={setSearch} value={search} className={styles.searchBar} />
           </div>
