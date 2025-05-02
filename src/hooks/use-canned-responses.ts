@@ -19,7 +19,7 @@ const filteredAndSortedResponses = (responses: CannedResponse[], filter: CannedR
 
 export const useCannedResponses = (): UseCannedResponses => {
   const [filter, setFilter] = useState<CannedResponseFilterType>('all');
-  const items = Object.values(useSelector(getCannedResponses));
+  const items = useSelector(getCannedResponses);
   const isEmpty = items.length === 0;
 
   return {

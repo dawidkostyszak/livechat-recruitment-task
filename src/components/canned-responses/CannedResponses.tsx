@@ -1,11 +1,10 @@
 import { useState, type FC } from 'react';
-import { SearchInput, SegmentedControl } from '@livechat/design-system-react-components';
+import { SearchInput } from '@livechat/design-system-react-components';
 import { CannedResponseItem } from './CannedResponseItem';
 import { EmptyState } from '../empty-state/EmptyState';
-import { CannedResponseFilterType } from '../../types/filter-type';
 import { useCannedResponses } from '../../hooks/use-canned-responses';
-import { CANNED_RESPONSES_BUTTONS } from '../canned-responses-buttons/configuration';
 import * as styles from './styles';
+import { CannedResponseButtons } from '../canned-responses-buttons/CannedResponseButtons';
 
 export const CannedResponses: FC = () => {
   const { cannedResponses, setFilter, filter, isEmpty } = useCannedResponses();
@@ -17,16 +16,7 @@ export const CannedResponses: FC = () => {
         <>
           <div className={styles.actionBar}>
             <div className={styles.barContainer}>
-              <>
-                <div className={styles.segmentedControllButtonTopSpace}></div>
-                <SegmentedControl
-                  initialId="all"
-                  currentId={filter}
-                  className={styles.segmentedControlButton}
-                  buttons={CANNED_RESPONSES_BUTTONS}
-                  onButtonClick={(id) => setFilter(id as CannedResponseFilterType)}
-                />
-              </>
+              <CannedResponseButtons filter={filter} setFilter={setFilter} />
             </div>
             <SearchInput onChange={setSearch} value={search} className={styles.searchBar} />
           </div>
