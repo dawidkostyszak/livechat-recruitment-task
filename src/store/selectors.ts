@@ -10,6 +10,7 @@ export interface EntitiesState {
 export interface StoreState {
   entities: EntitiesState;
   filter: CannedResponseFilterType;
+  search: string;
 }
 
 export interface CannedResponsesState {
@@ -21,33 +22,34 @@ export interface WithCannedResponsesState {
   entities: {
     cannedResponses: CannedResponsesState;
   };
-  filter: CannedResponseFilterType;
 }
 
 export const getCannedResponses = createSelector(
-  [(state: WithCannedResponsesState): KeyMap<CannedResponse> => state.entities.cannedResponses.byIds],
-  (cannedResponses: KeyMap<CannedResponse>): CannedResponse[] => {
-    return Object.values(cannedResponses);
+  [(state: WithCannedResponsesState): KeyMap<CannedResponse> => state.entities.cannedResponses.byIds, getSearch],
+  (cannedResponses, search): CannedResponse[] => {
+    return searchCannedResponses(Object.values(cannedResponses), search);
   },
 );
 
 export const getSharedCannedResponses = createSelector(
-  [getCannedResponses],
-  (cannedResponses: CannedResponse[]): CannedResponse[] => {
-    return cannedResponses.filter((cannedResponse) => !cannedResponse.isPrivate);
+  [getCannedResponses, getSearch],
+  (cannedResponses, search): CannedResponse[] => {
+    return searchCannedResponses(
+      cannedResponses.filter((cannedResponse) => !cannedResponse.isPrivate),
+      search,
+    );
   },
 );
 
 export const getPrivateCannedResponses = createSelector(
-  [getCannedResponses],
-  (cannedResponses: CannedResponse[]): CannedResponse[] => {
-    return cannedResponses.filter((cannedResponse) => cannedResponse.isPrivate);
+  [getCannedResponses, getSearch],
+  (cannedResponses, search): CannedResponse[] => {
+    return searchCannedResponses(
+      cannedResponses.filter((cannedResponse) => cannedResponse.isPrivate),
+      search,
+    );
   },
 );
-
-export function getFilter(state: WithCannedResponsesState): CannedResponseFilterType {
-  return state.filter;
-}
 
 export const getFilteredCannedResponses = createSelector(
   [getCannedResponses, getSharedCannedResponses, getPrivateCannedResponses, getFilter],
@@ -63,3 +65,36 @@ export const getFilteredCannedResponses = createSelector(
     return cannedResponses;
   },
 );
+
+export function getFilter(state: StoreState): CannedResponseFilterType {
+  return state.filter;
+}
+
+export function getSearch(state: StoreState): string {
+  return state.search;
+}
+
+function searchCannedResponses(cannedResponses: CannedResponse[], search: string): CannedResponse[] {
+  if (!search) {
+    return cannedResponses;
+  }
+
+  return cannedResponses.filter(
+    (cannedResponse) =>
+      searchByContent(cannedResponse, search) ||
+      searchByTag(cannedResponse, search) ||
+      searchByAuthor(cannedResponse, search),
+  );
+}
+
+function searchByContent(cannedResponse: CannedResponse, search: string): boolean {
+  return cannedResponse.text.toLowerCase().includes(search.toLowerCase());
+}
+
+function searchByTag(cannedResponse: CannedResponse, search: string): boolean {
+  return cannedResponse.tags.some((tag) => tag.toLowerCase().includes(search.toLowerCase()));
+}
+
+function searchByAuthor(cannedResponse: CannedResponse, search: string): boolean {
+  return cannedResponse.createdBy?.toLowerCase().includes(search.toLowerCase()) || false;
+}
