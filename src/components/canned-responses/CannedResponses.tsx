@@ -46,7 +46,7 @@ export const CannedResponses: FC = () => {
           <Virtuoso
             style={{ height: '100%' }}
             data={cannedResponses}
-            itemContent={(_, item) => <CannedResponseItem key={item.id} item={item} />}
+            itemContent={(_, item) => <CannedResponseItem key={item.id} item={item} handleSearch={handleSearch} />}
           />
         )}
       </div>

@@ -13,9 +13,10 @@ import { AgentAvatar } from '../avatar/AgentAvatar';
 import * as styles from './styles';
 interface Props {
   item: CannedResponse;
+  handleSearch: (value: string) => void;
 }
 
-export const CannedResponseItem: FC<Props> = ({ item }) => {
+export const CannedResponseItem: FC<Props> = ({ item, handleSearch }) => {
   const {
     authorName,
     avatarUrl,
@@ -50,6 +51,7 @@ export const CannedResponseItem: FC<Props> = ({ item }) => {
                 className={cx(styles.sharedItemHandle, { [styles.privateItemHandle]: isPrivate })}
                 key={tag}
                 data-testid={tag}
+                onClick={() => handleSearch(tag)}
               >
                 {tag}
               </li>
