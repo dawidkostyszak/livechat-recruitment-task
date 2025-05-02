@@ -8,6 +8,7 @@ import { CannedResponseButtons } from '../canned-responses-buttons/CannedRespons
 import { useDispatch } from 'react-redux';
 import { setSearchAction } from '../../store/actions';
 import { debounce } from 'lodash';
+import { Virtuoso } from 'react-virtuoso';
 
 export const CannedResponses: FC = () => {
   const { cannedResponses, isEmpty } = useCannedResponses();
@@ -22,16 +23,14 @@ export const CannedResponses: FC = () => {
 
   return (
     <div className={styles.wrapper}>
-      {!isEmpty && (
-        <>
-          <div className={styles.actionBar}>
-            <div className={styles.barContainer}>
-              <CannedResponseButtons />
-            </div>
-            <SearchInput onChange={handleSearch} value={search} className={styles.searchBar} />
+      <>
+        <div className={styles.actionBar}>
+          <div className={styles.barContainer}>
+            <CannedResponseButtons />
           </div>
-        </>
-      )}
+          <SearchInput onChange={handleSearch} value={search} className={styles.searchBar} />
+        </div>
+      </>
 
       <div className={styles.list}>
         {isEmpty && (
@@ -44,11 +43,11 @@ export const CannedResponses: FC = () => {
         )}
 
         {!isEmpty && (
-          <>
-            {cannedResponses.map((item) => (
-              <CannedResponseItem key={item.id} item={item} />
-            ))}
-          </>
+          <Virtuoso
+            style={{ height: '100%' }}
+            data={cannedResponses}
+            itemContent={(_, item) => <CannedResponseItem key={item.id} item={item} />}
+          />
         )}
       </div>
     </div>
