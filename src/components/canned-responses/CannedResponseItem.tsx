@@ -11,6 +11,9 @@ import { FakeLink } from '../fake-link/FakeLink';
 import { AgentAvatar } from '../avatar/AgentAvatar';
 
 import * as styles from './styles';
+import { HighlightText } from '../highlight-text/HighlightText';
+import { useSelector } from 'react-redux';
+import { getSearch } from '../../store/selectors';
 interface Props {
   item: CannedResponse;
   handleSearch: (value: string) => void;
@@ -30,6 +33,7 @@ export const CannedResponseItem: FC<Props> = ({ item, handleSearch, isScrolling 
     toggleFolded,
     justModified,
   } = useCannedResponseItem({ item, isScrolling });
+  const search = useSelector(getSearch);
   const { id, isPrivate } = item;
 
   const userInfo = isPrivate ? (
@@ -54,7 +58,7 @@ export const CannedResponseItem: FC<Props> = ({ item, handleSearch, isScrolling 
                 data-testid={tag}
                 onClick={() => handleSearch(tag)}
               >
-                {tag}
+                <HighlightText text={tag} highlight={search} />
               </li>
             ))}
           </ul>
@@ -99,7 +103,7 @@ export const CannedResponseItem: FC<Props> = ({ item, handleSearch, isScrolling 
       </div>
 
       <div data-testid="canned-message" className={cx({ [styles.content]: false })}>
-        {content}
+        <HighlightText text={content} highlight={search} />
       </div>
 
       <div className={styles.footer}>

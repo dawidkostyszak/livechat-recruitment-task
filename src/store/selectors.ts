@@ -92,10 +92,7 @@ function searchCannedResponses(cannedResponses: CannedResponse[], search: string
   }
 
   return cannedResponses.filter(
-    (cannedResponse) =>
-      searchByContent(cannedResponse, search) ||
-      searchByTag(cannedResponse, search) ||
-      searchByAuthor(cannedResponse, search),
+    (cannedResponse) => searchByContent(cannedResponse, search) || searchByTag(cannedResponse, search),
   );
 }
 
@@ -105,10 +102,6 @@ function searchByContent(cannedResponse: CannedResponse, search: string): boolea
 
 function searchByTag(cannedResponse: CannedResponse, search: string): boolean {
   return cannedResponse.tags.some((tag) => tag.toLowerCase().includes(search.toLowerCase()));
-}
-
-function searchByAuthor(cannedResponse: CannedResponse, search: string): boolean {
-  return cannedResponse.createdBy?.toLowerCase().includes(search.toLowerCase()) || false;
 }
 
 export function getAuthors(state: WithAuthorsState): KeyMap<Author> {
