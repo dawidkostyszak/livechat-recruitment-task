@@ -13,6 +13,7 @@ import { Virtuoso } from 'react-virtuoso';
 export const CannedResponses: FC = () => {
   const { cannedResponses, isEmpty } = useCannedResponses();
   const [search, setSearch] = useState('');
+  const [isScrolling, setIsScrolling] = useState(false);
   const dispatch = useDispatch();
   const debouncedDispatch = debounce(dispatch, 500);
 
@@ -46,7 +47,15 @@ export const CannedResponses: FC = () => {
           <Virtuoso
             style={{ height: '100%' }}
             data={cannedResponses}
-            itemContent={(_, item) => <CannedResponseItem key={item.id} item={item} handleSearch={handleSearch} />}
+            itemContent={(_, item, { isScrolling }) => (
+              <CannedResponseItem key={item.id} item={item} handleSearch={handleSearch} isScrolling={isScrolling} />
+            )}
+            overscan={{
+              main: 2,
+              reverse: 2,
+            }}
+            context={{ isScrolling }}
+            isScrolling={setIsScrolling}
           />
         )}
       </div>

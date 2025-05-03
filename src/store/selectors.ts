@@ -2,9 +2,11 @@ import { CannedResponse } from '../types/canned-responses';
 import { KeyMap } from '../types/types';
 import { createSelector } from 'reselect';
 import type { CannedResponseFilterType } from '../types/filter-type';
+import { Author } from '../types/author';
 
 export interface EntitiesState {
   cannedResponses: CannedResponsesState;
+  authors: AuthorsState;
 }
 
 export interface StoreState {
@@ -21,6 +23,16 @@ export interface CannedResponsesState {
 export interface WithCannedResponsesState {
   entities: {
     cannedResponses: CannedResponsesState;
+  };
+}
+
+export interface AuthorsState {
+  byCannedResponseIds: KeyMap<Author>;
+}
+
+export interface WithAuthorsState {
+  entities: {
+    authors: AuthorsState;
   };
 }
 
@@ -97,4 +109,8 @@ function searchByTag(cannedResponse: CannedResponse, search: string): boolean {
 
 function searchByAuthor(cannedResponse: CannedResponse, search: string): boolean {
   return cannedResponse.createdBy?.toLowerCase().includes(search.toLowerCase()) || false;
+}
+
+export function getAuthors(state: WithAuthorsState): KeyMap<Author> {
+  return state.entities.authors.byCannedResponseIds;
 }

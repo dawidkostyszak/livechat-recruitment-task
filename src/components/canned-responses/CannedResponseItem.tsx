@@ -14,9 +14,10 @@ import * as styles from './styles';
 interface Props {
   item: CannedResponse;
   handleSearch: (value: string) => void;
+  isScrolling: boolean;
 }
 
-export const CannedResponseItem: FC<Props> = ({ item, handleSearch }) => {
+export const CannedResponseItem: FC<Props> = ({ item, handleSearch, isScrolling }) => {
   const {
     authorName,
     avatarUrl,
@@ -28,7 +29,7 @@ export const CannedResponseItem: FC<Props> = ({ item, handleSearch }) => {
     showConfirmOverlay,
     toggleFolded,
     justModified,
-  } = useCannedResponseItem({ item });
+  } = useCannedResponseItem({ item, isScrolling });
   const { id, isPrivate } = item;
 
   const userInfo = isPrivate ? (
