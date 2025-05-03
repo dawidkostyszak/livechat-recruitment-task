@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { setSearchAction } from '../../store/actions';
 import { debounce } from 'lodash';
 import { Virtuoso } from 'react-virtuoso';
+import { CannedResponseItemPlaceholder } from './CannedResponseItemPlaceholder';
 
 export const CannedResponses: FC = () => {
   const { cannedResponses, isEmpty } = useCannedResponses();
@@ -56,6 +57,11 @@ export const CannedResponses: FC = () => {
             }}
             context={{ isScrolling }}
             isScrolling={setIsScrolling}
+            components={{ ScrollSeekPlaceholder: CannedResponseItemPlaceholder }}
+            scrollSeekConfiguration={{
+              enter: (velocity) => Math.abs(velocity) > 50,
+              exit: (velocity) => Math.abs(velocity) < 10,
+            }}
           />
         )}
       </div>
