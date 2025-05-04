@@ -11,6 +11,8 @@ import { debounce } from 'lodash';
 import { Virtuoso } from 'react-virtuoso';
 import { CannedResponseItemPlaceholder } from './CannedResponseItemPlaceholder';
 
+const OVERSCAN_ITEMS = 2;
+
 export const CannedResponses: FC = () => {
   const { cannedResponses, isEmpty } = useCannedResponses();
   const [search, setSearch] = useState('');
@@ -52,14 +54,14 @@ export const CannedResponses: FC = () => {
               <CannedResponseItem key={item.id} item={item} handleSearch={handleSearch} isScrolling={isScrolling} />
             )}
             overscan={{
-              main: 2,
-              reverse: 2,
+              main: OVERSCAN_ITEMS,
+              reverse: OVERSCAN_ITEMS,
             }}
             context={{ isScrolling }}
             isScrolling={setIsScrolling}
             components={{ ScrollSeekPlaceholder: CannedResponseItemPlaceholder }}
             scrollSeekConfiguration={{
-              enter: (velocity) => Math.abs(velocity) > 50,
+              enter: (velocity) => Math.abs(velocity) > 3000,
               exit: (velocity) => Math.abs(velocity) < 10,
             }}
           />
