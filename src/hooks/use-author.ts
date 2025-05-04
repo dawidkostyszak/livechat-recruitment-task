@@ -24,7 +24,7 @@ export const useAuthor = ({ cannedResponseId, skip }: UseAuthor) => {
 
   useEffect(() => {
     async function getAuthor() {
-      const response = await fetch(`https://randomuser.me/api/?seed=${cannedResponseId}`);
+      const response = await fetch(`http://localhost:5000/api/?seed=${cannedResponseId}`);
       const jsonResponse = await response.json();
       const author = jsonResponse.results[0];
 
