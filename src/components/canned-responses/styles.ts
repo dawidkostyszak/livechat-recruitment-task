@@ -238,18 +238,6 @@ export const sharedItemHandle = css`
   cursor: pointer;
 `;
 
-export const segmentedControlButton = css`
-  box-sizing: border-box;
-
-  button:focus {
-    box-shadow: none;
-  }
-`;
-
-export const segmentedControllButtonTopSpace = css`
-  height: 32px;
-`;
-
 export const foldContent = css`
   margin-left: auto;
   min-width: 90px;

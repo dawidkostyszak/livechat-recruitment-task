@@ -12,8 +12,6 @@ import { AgentAvatar } from '../avatar/AgentAvatar';
 
 import * as styles from './styles';
 import { HighlightText } from '../highlight-text/HighlightText';
-import { useSelector } from 'react-redux';
-import { getSearch } from '../../store/selectors';
 interface Props {
   item: CannedResponse;
   handleSearch: (value: string) => void;
@@ -32,8 +30,8 @@ export const CannedResponseItem: FC<Props> = ({ item, handleSearch, isScrolling 
     showConfirmOverlay,
     toggleFolded,
     justModified,
+    search,
   } = useCannedResponseItem({ item, isScrolling });
-  const search = useSelector(getSearch);
   const { id, isPrivate } = item;
 
   const userInfo = isPrivate ? (

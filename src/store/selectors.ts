@@ -3,6 +3,7 @@ import { KeyMap } from '../types/types';
 import { createSelector } from 'reselect';
 import type { CannedResponseFilterType } from '../types/filter-type';
 import { Author } from '../types/author';
+import { searchCannedResponses } from './helpers/search-canned-responses';
 
 export interface EntitiesState {
   cannedResponses: CannedResponsesState;
@@ -84,24 +85,6 @@ export function getFilter(state: StoreState): CannedResponseFilterType {
 
 export function getSearch(state: StoreState): string {
   return state.search;
-}
-
-function searchCannedResponses(cannedResponses: CannedResponse[], search: string): CannedResponse[] {
-  if (!search) {
-    return cannedResponses;
-  }
-
-  return cannedResponses.filter(
-    (cannedResponse) => searchByContent(cannedResponse, search) || searchByTag(cannedResponse, search),
-  );
-}
-
-function searchByContent(cannedResponse: CannedResponse, search: string): boolean {
-  return cannedResponse.text.toLowerCase().includes(search.toLowerCase());
-}
-
-function searchByTag(cannedResponse: CannedResponse, search: string): boolean {
-  return cannedResponse.tags.some((tag) => tag.toLowerCase().includes(search.toLowerCase()));
 }
 
 export function getAuthors(state: WithAuthorsState): KeyMap<Author> {

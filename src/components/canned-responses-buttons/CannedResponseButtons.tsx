@@ -1,5 +1,5 @@
 import { type FC } from 'react';
-import * as styles from '../canned-responses/styles';
+import * as styles from './styles';
 import { SegmentedControl } from '@livechat/design-system-react-components';
 import { useCannedResponsesButtons } from './use-canned-responses-buttons';
 

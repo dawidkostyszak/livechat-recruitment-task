@@ -7,6 +7,8 @@ import { DateFormat } from '../../constants/date-format';
 import useToggle from '../../hooks/use-toggle';
 import { CannedResponse } from '../../types/canned-responses';
 import { useAuthor } from '../../hooks/use-author';
+import { useSelector } from 'react-redux';
+import { getSearch } from '../../store/selectors';
 
 interface UseCannedResponseItemProps {
   item: CannedResponse;
@@ -26,11 +28,13 @@ interface UseCannedResponseItem {
   showConfirmOverlay: boolean;
   justModified: boolean;
   toggleFolded: () => void;
+  search: string;
 }
 
 const maxTextLength = 150;
 
 export const useCannedResponseItem = ({ item, isScrolling }: UseCannedResponseItemProps): UseCannedResponseItem => {
+  const search = useSelector(getSearch);
   const { modifiedBy, isPrivate, text, modificationTimestamp, id } = item;
   const author = useAuthor({ cannedResponseId: id, skip: Boolean(isPrivate) || isScrolling });
   const [isFolded, toggleFolded] = useToggle(true);
@@ -63,5 +67,6 @@ export const useCannedResponseItem = ({ item, isScrolling }: UseCannedResponseIt
     showConfirmOverlay,
     toggleFolded,
     justModified,
+    search,
   };
 };
