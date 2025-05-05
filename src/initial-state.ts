@@ -1,7 +1,12 @@
 import { StoreState } from './store/selectors';
 
 export const initialState: StoreState = {
+  filter: 'all',
+  search: '',
   entities: {
+    authors: {
+      byCannedResponseIds: {},
+    },
     cannedResponses: {
       allIds: [
         '438bfee6-19d4-416c-995d-136847bcd50b',

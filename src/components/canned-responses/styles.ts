@@ -201,7 +201,7 @@ export const wrapper = css`
 export const list = css`
   margin-top: 16px;
   position: relative;
-  height: 100%;
+  height: calc(100vh - 300px);
   min-height: 400px;
   max-width: ${maxWidth};
 `;
@@ -235,18 +235,7 @@ export const privateItemHandle = css`
 
 export const sharedItemHandle = css`
   background-color: var(${DesignToken.SurfaceBasicDefault});
-`;
-
-export const segmentedControlButton = css`
-  box-sizing: border-box;
-
-  button:focus {
-    box-shadow: none;
-  }
-`;
-
-export const segmentedControllButtonTopSpace = css`
-  height: 32px;
+  cursor: pointer;
 `;
 
 export const foldContent = css`

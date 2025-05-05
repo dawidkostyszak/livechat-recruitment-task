@@ -11,11 +11,14 @@ import { FakeLink } from '../fake-link/FakeLink';
 import { AgentAvatar } from '../avatar/AgentAvatar';
 
 import * as styles from './styles';
+import { HighlightText } from '../highlight-text/HighlightText';
 interface Props {
   item: CannedResponse;
+  handleSearch: (value: string) => void;
+  isScrolling: boolean;
 }
 
-export const CannedResponseItem: FC<Props> = ({ item }) => {
+export const CannedResponseItem: FC<Props> = ({ item, handleSearch, isScrolling }) => {
   const {
     authorName,
     avatarUrl,
@@ -27,7 +30,8 @@ export const CannedResponseItem: FC<Props> = ({ item }) => {
     showConfirmOverlay,
     toggleFolded,
     justModified,
-  } = useCannedResponseItem({ item });
+    search,
+  } = useCannedResponseItem({ item, isScrolling });
   const { id, isPrivate } = item;
 
   const userInfo = isPrivate ? (
@@ -50,8 +54,9 @@ export const CannedResponseItem: FC<Props> = ({ item }) => {
                 className={cx(styles.sharedItemHandle, { [styles.privateItemHandle]: isPrivate })}
                 key={tag}
                 data-testid={tag}
+                onClick={() => handleSearch(tag)}
               >
-                {tag}
+                <HighlightText text={tag} highlight={search} />
               </li>
             ))}
           </ul>
@@ -96,7 +101,7 @@ export const CannedResponseItem: FC<Props> = ({ item }) => {
       </div>
 
       <div data-testid="canned-message" className={cx({ [styles.content]: false })}>
-        {content}
+        <HighlightText text={content} highlight={search} />
       </div>
 
       <div className={styles.footer}>

@@ -6,9 +6,13 @@ import { getExtractedText } from './helpers';
 import { DateFormat } from '../../constants/date-format';
 import useToggle from '../../hooks/use-toggle';
 import { CannedResponse } from '../../types/canned-responses';
+import { useAuthor } from '../../hooks/use-author';
+import { useSelector } from 'react-redux';
+import { getSearch } from '../../store/selectors';
 
 interface UseCannedResponseItemProps {
   item: CannedResponse;
+  isScrolling: boolean;
 }
 
 interface UseCannedResponseItem {
@@ -24,12 +28,15 @@ interface UseCannedResponseItem {
   showConfirmOverlay: boolean;
   justModified: boolean;
   toggleFolded: () => void;
+  search: string;
 }
 
 const maxTextLength = 150;
 
-export const useCannedResponseItem = ({ item }: UseCannedResponseItemProps): UseCannedResponseItem => {
-  const { createdBy, modifiedBy, isPrivate, avatarUrl, text, modificationTimestamp } = item;
+export const useCannedResponseItem = ({ item, isScrolling }: UseCannedResponseItemProps): UseCannedResponseItem => {
+  const search = useSelector(getSearch);
+  const { modifiedBy, isPrivate, text, modificationTimestamp, id } = item;
+  const author = useAuthor({ cannedResponseId: id, skip: Boolean(isPrivate) || isScrolling });
   const [isFolded, toggleFolded] = useToggle(true);
   const [showConfirmOverlay, setShowConfirmOverlay] = useState(false);
   const performedAction = modifiedBy ? 'Modified' : 'Added';
@@ -48,8 +55,8 @@ export const useCannedResponseItem = ({ item }: UseCannedResponseItemProps): Use
   const justModified = modificationTimestamp > new Date().getTime() - 5e3;
 
   return {
-    authorName: createdBy || '',
-    avatarUrl: avatarUrl || '',
+    authorName: author ? `${author.name.first} ${author.name.last}` : '',
+    avatarUrl: author?.picture.thumbnail || '',
     content,
     foldButtonContent: isTextTooLong ? foldButtonContent : '',
     foldButtonIcon: isTextTooLong ? foldButtonIcon : null,
@@ -60,5 +67,6 @@ export const useCannedResponseItem = ({ item }: UseCannedResponseItemProps): Use
     showConfirmOverlay,
     toggleFolded,
     justModified,
+    search,
   };
 };
