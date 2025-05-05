@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  getCannedResponses,
+  getAllCannedResponses,
   getFilter,
   getPrivateCannedResponses,
   getSharedCannedResponses,
@@ -10,7 +10,7 @@ import { setFilterAction } from '../../store/actions';
 import type { CannedResponseFilterType } from '../../types/filter-type';
 
 export const useCannedResponsesButtons = () => {
-  const allCannedResponses = useSelector(getCannedResponses);
+  const allCannedResponses = useSelector(getAllCannedResponses);
   const sharedCannedResponses = useSelector(getSharedCannedResponses);
   const privateCannedResponses = useSelector(getPrivateCannedResponses);
 

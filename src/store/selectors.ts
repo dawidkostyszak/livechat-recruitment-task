@@ -38,9 +38,9 @@ export interface WithAuthorsState {
 }
 
 export const getCannedResponses = createSelector(
-  [(state: WithCannedResponsesState): KeyMap<CannedResponse> => state.entities.cannedResponses.byIds, getSearch],
-  (cannedResponses, search): CannedResponse[] => {
-    return searchCannedResponses(Object.values(cannedResponses), search);
+  [(state: WithCannedResponsesState): KeyMap<CannedResponse> => state.entities.cannedResponses.byIds],
+  (cannedResponses): CannedResponse[] => {
+    return Object.values(cannedResponses);
   },
 );
 
@@ -64,8 +64,15 @@ export const getPrivateCannedResponses = createSelector(
   },
 );
 
+export const getAllCannedResponses = createSelector(
+  [getSharedCannedResponses, getPrivateCannedResponses],
+  (sharedCannedResponses, privateCannedResponses): CannedResponse[] => {
+    return [...sharedCannedResponses, ...privateCannedResponses];
+  },
+);
+
 export const getFilteredCannedResponses = createSelector(
-  [getCannedResponses, getSharedCannedResponses, getPrivateCannedResponses, getFilter],
+  [getAllCannedResponses, getSharedCannedResponses, getPrivateCannedResponses, getFilter],
   (cannedResponses, sharedCannedResponses, privateCannedResponses, filter): CannedResponse[] => {
     if (filter === 'shared') {
       return sharedCannedResponses;
